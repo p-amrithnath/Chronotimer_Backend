@@ -1,11 +1,15 @@
 package com.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,4 +67,24 @@ public class AuthController {
     {
     	return service.getRoles(username);
     }
+    
+    @GetMapping("/{id}")
+	public Optional<UserInfo> getEmployeeById(@PathVariable int id) {
+		return service.getTeamById(id);
+	}
+    
+    @PostMapping("/{id}")
+	public UserInfo updateEmployee(@PathVariable int id, @RequestBody UserInfo employeeDetails) {
+		return service.updateTeam(id, employeeDetails);
+	}
+
+    @DeleteMapping("/{id}")
+	public void deleteEmployee(@PathVariable int id) {
+		service.deleteTeam(id);
+	}
+    
+    @GetMapping
+	public List<UserInfo> getAllEmployees(){
+		return service.getAllTeams();
+	}
 }
