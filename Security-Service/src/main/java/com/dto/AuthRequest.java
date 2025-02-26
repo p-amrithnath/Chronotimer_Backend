@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthRequest {
 
-	private String username;
+	private String userName;
 	private String password;
 
 	public String getUsername() {
-		return username;
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsername(String userName) {
+		this.userName = userName;
 	}
 
 	public String getPassword() {
