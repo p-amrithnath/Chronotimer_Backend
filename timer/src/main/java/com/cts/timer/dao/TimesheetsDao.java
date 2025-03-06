@@ -16,4 +16,6 @@ public interface TimesheetsDao extends JpaRepository<Timesheets, Long> {
 
 	@Query("SELECT t FROM Timesheets t WHERE t.employeeId = :employeeId AND MONTH(t.date) = :month AND YEAR(t.date) = :year")
 	List<Timesheets> findByEmployeeIdAndMonth(Long employeeId, int month, int year);
+	
+	void deleteAllByEmployeeId(Long employeeId);
 }

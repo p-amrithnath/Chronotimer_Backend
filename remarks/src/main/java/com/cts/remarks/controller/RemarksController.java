@@ -104,4 +104,10 @@ public class RemarksController {
         List<Remarks> remarks = remarksServiceImpl.getRemarksByTimesheetId(timesheetId);
         return new ResponseEntity<>(remarks, HttpStatus.OK);
     }
+    
+    @DeleteMapping("/all/{id}")
+    public ResponseEntity<String> deleteAllByEmployeeId(@PathVariable Long id){
+    	String msg = remarksServiceImpl.deleteAllRemarksByEmpid(id);
+    	return new ResponseEntity<>(msg,HttpStatus.OK);
+    }
 }

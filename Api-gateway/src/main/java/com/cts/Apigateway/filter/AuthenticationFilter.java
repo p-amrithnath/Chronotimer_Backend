@@ -58,13 +58,16 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     }
 
     private boolean isAuthorized(String role, String path, String method) {
-        if ("USER".equalsIgnoreCase(role)) {
-            return path.startsWith("/projects") || path.startsWith("/employees") || path.startsWith("/timeentry") ||path.startsWith("/remarks") || path.startsWith("/timesheets");
-        }
+//        if ("ADMIN".equalsIgnoreCase(role)) {
+//            return path.startsWith("/projects") || path.startsWith("/employees") || path.startsWith("/timeentry") ||path.startsWith("/remarks") || path.startsWith("/timesheets");
+//        }
+//        else if("USER".equalsIgnoreCase(role)) {
+//        	 return path.startsWith("/projects") || path.startsWith("/employees") || path.startsWith("/timeentry") ||path.startsWith("/remarks") || path.startsWith("/timesheets");
+//        }
 //        else if ("USER".equalsIgnoreCase(role)) {
 //            return (path.startsWith("/") || path.startsWith("/products")) && method.equalsIgnoreCase("GET");
 //        }
-        return false;
+        return true;
     }
 
     private Mono<Void> handleUnauthorized(ServerHttpResponse response, String message) {

@@ -14,4 +14,5 @@ public class RemarksDTO {
     private String message;
     private LocalDateTime createdAt;
     private String createdBy;
+    private Long  employeeId;
 }

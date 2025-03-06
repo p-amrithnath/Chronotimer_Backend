@@ -11,5 +11,5 @@ import com.cts.remarks.model.Remarks;
 public interface RemarksDao extends JpaRepository<Remarks, Integer> {
 
 	List<Remarks> findByTimesheetId(Long timesheetId);
-
+	void deleteAllByEmployeeId(Long employeeId);
 }

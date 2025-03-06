@@ -21,6 +21,8 @@ import com.cts.timer.exception.ResourceNotFoundException;
 import com.cts.timer.model.Timeentry;
 import com.cts.timer.model.Timesheets;
 
+import jakarta.transaction.Transactional;
+
 /**
  * Service implementation for managing timesheets and time entries.
  */
@@ -140,16 +142,19 @@ public class TimesheetsServiceImpl implements TimesheetsService {
 
 	@Override
 	public boolean isOverlapping(Timeentry newEntry) {
-		List<Timeentry> existingEntries = timeentryDao.findByDateAndEmployeeId(newEntry.getDate(),
-				newEntry.getEmployeeId());
+	    List<Timeentry> existingEntries = timeentryDao.findByDateAndEmployeeId(newEntry.getDate(), newEntry.getEmployeeId());
 
-		for (Timeentry entry : existingEntries) {
-			if (newEntry.getStartTime().isBefore(entry.getEndTime())
-					&& newEntry.getEndTime().isAfter(entry.getStartTime())) {
-				return true;
-			}
-		}
-		return false;
+	    Long id = newEntry.getId();
+
+	    // Exclude the current time entry from the list
+	    existingEntries.removeIf(entry -> entry.getId().equals(id));
+
+	    for (Timeentry entry : existingEntries) {
+	        if (newEntry.getStartTime().isBefore(entry.getEndTime()) && newEntry.getEndTime().isAfter(entry.getStartTime())) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 
 	/**
@@ -222,6 +227,10 @@ public class TimesheetsServiceImpl implements TimesheetsService {
 		timeEntry.setStatus(Timeentry.Status.PENDING);
 		timeEntry.setSubmit(false);
 		timeEntry.setHours(timeEntryDetails.getHours());
+		
+		if (isOverlapping(timeEntry)) {
+			throw new IllegalArgumentException("Time entry overlaps with an existing entry.");
+		}
 
 		Timeentry updatedTimeEntry = timeentryDao.save(timeEntry);
 		updateTimesheet(updatedTimeEntry.getDate(), updatedTimeEntry.getEmployeeId());
@@ -272,7 +281,7 @@ public class TimesheetsServiceImpl implements TimesheetsService {
 		remark.setMessage(request.getMessage());
 		remark.setCreatedAt(request.getCreatedAt());
 		remark.setCreatedBy(request.getCreatedBy());
-
+		remark.setEmployeeId(request.getEmployeeId());
 		for (Long id : request.getTimeentryIds()) {
 			Timeentry timeentry = timeentryDao.findById(id)
 					.orElseThrow(() -> new ResourceNotFoundException(TIMEENTRY_NOT_FOUND));
@@ -333,6 +342,14 @@ public class TimesheetsServiceImpl implements TimesheetsService {
 				timeentryDao.save(timeentry);
 			}
 		}
+	}
+	
+	@Override
+	@Transactional
+	public String deleteAllByEmployeeId(Long employeeId) {
+		timeentryDao.deleteAllByEmployeeId(employeeId);
+		timesheetsDao.deleteAllByEmployeeId(employeeId);
+		return "Successfully deleted!!";
 	}
 
 }

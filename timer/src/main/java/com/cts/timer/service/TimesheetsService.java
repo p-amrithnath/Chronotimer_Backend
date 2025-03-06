@@ -31,4 +31,6 @@ public interface TimesheetsService {
 	public abstract TimesheetResponseDTO findByDateAndEmployeeId(LocalDate date, Long employeeId);
 
 	public abstract void submitTimeentries(LocalDate date, Long employeeId);
+	
+	public abstract String deleteAllByEmployeeId(Long employeeId);
 }

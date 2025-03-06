@@ -18,4 +18,6 @@ public interface RemarksService {
 	public abstract List<Remarks> getAllRemarks();
 
 	public abstract List<Remarks> getRemarksByTimesheetId(Long timesheetId);
+	
+	public abstract String deleteAllRemarksByEmpid(Long employeeId);
 }

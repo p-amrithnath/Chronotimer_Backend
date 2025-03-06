@@ -10,6 +10,8 @@ import com.cts.remarks.dao.RemarksDao;
 import com.cts.remarks.exception.ResourceNotFoundException;
 import com.cts.remarks.model.Remarks;
 
+import jakarta.transaction.Transactional;
+
 /**
  * Service class for managing remarks. Provides methods for creating, deleting,
  * updating, and retrieving remarks.
@@ -93,5 +95,12 @@ public class RemarksServiceImpl implements RemarksService {
 	@Override
 	public List<Remarks> getRemarksByTimesheetId(Long timesheetId) {
 		return remarksDao.findByTimesheetId(timesheetId);
+	}
+	
+	@Override
+	@Transactional
+	public String deleteAllRemarksByEmpid(Long employeeId) {
+		remarksDao.deleteAllByEmployeeId(employeeId);
+		return "Successfully deleted";
 	}
 }

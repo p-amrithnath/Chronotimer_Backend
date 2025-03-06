@@ -18,5 +18,6 @@ public class ApprovalRequestDTO {
     private String status;
     private LocalDateTime createdAt;
     private String createdBy;
+    private Long employeeId;
 
 }

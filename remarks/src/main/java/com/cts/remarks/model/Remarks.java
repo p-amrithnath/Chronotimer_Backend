@@ -33,5 +33,8 @@ public class Remarks {
 
 	@Column(nullable = false)
 	private String createdBy;
+	
+	@Column(nullable = false)
+	private Long employeeId;
 
 }

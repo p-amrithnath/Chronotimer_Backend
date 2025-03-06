@@ -11,4 +11,6 @@ import com.cts.timer.model.Timeentry;
 @Repository
 public interface TimeentryDao extends JpaRepository<Timeentry, Long> {
 	List<Timeentry> findByDateAndEmployeeId(LocalDate date, Long employeeId);
+	
+	void deleteAllByEmployeeId(Long employeeId);
 }

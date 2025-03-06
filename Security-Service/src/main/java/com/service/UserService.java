@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.client.RemarksClient;
+import com.client.TimerClient;
 import com.entity.UserInfo;
 import com.exception.ResourceNotFoundException;
 import com.repository.UserInfoRepository;
@@ -19,6 +21,12 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private RemarksClient remarksClient;
+	
+	@Autowired
+	private TimerClient timerClient;
+	
 	private static final String TEAM_NOT_FOUND = "team not found with id:";
 
 	public String addUser(UserInfo userInfo) {
@@ -30,7 +38,7 @@ public class UserService {
 			repository.save(userInfo);
 			return "Registration Successfully ";
 		} else {
-			return "This UserName is Already Registered.";
+			return "Already Existing User is updated.";
 		}
 	}
 
@@ -62,11 +70,18 @@ public class UserService {
 		team.setRoles(teamDetails.getRoles());
 		team.setSalary(teamDetails.getSalary());
 		team.setDoj(teamDetails.getDoj());
+		team.setSkillset(teamDetails.getSkillset());
+		team.setEmpType(teamDetails.getEmpType());
+		team.setDepartmentName(teamDetails.getDepartmentName());
+		team.setYearsOfExperience(teamDetails.getYearsOfExperience());
 		return repository.save(team);
 	}
 	
 	public void deleteTeam(int id) {
 		UserInfo team = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(TEAM_NOT_FOUND + id));
+		long longid = (long) id;
+		remarksClient.deleteAllByEmployeeId(longid);
+		timerClient.deleteAllByEmployeeId(longid);
 		repository.delete(team);
 	}
 }

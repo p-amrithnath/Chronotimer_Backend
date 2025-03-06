@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ import com.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class AuthController {
 
 	@Autowired
@@ -79,7 +80,7 @@ public class AuthController {
 		return service.getTeamById(id);
 	}
 
-	@PostMapping("/{id}")
+	@PatchMapping("/{id}")
 	public UserInfo updateEmployee(@PathVariable int id, @RequestBody UserInfo employeeDetails) {
 		return service.updateTeam(id, employeeDetails);
 	}
